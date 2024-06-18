@@ -15,6 +15,6 @@ router.post( "/" , [ check_token , create ] ) ;
 router.get( "/" , [ check_token , get_all_nature_projet ] ) ;
 router.get( "/not_deleted" , [ check_token , get_nature_not_deleted ] ) ;
 router.get( "/:id" , [ check_token , get_nature_by_id ] ) ;
-router.get( "/delete_restore/:id" , [ check_token , delete_or_restore_nature ] ) ;
+router.put( "/delete_restore/:id" , [ check_token , delete_or_restore_nature ] ) ;
 
 module.exports = router 
