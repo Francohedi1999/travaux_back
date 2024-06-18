@@ -107,7 +107,7 @@ delete_or_restore_mode = async ( req , res ) =>
                 { deleted: false } ,
                 { where: { id: mode_id } }
             );
-            return res.status(200).json( { message : "La mode de projet a été bien restaurée" } ) ;
+            return res.status(200).json( { message : "Le mode de projet a été bien restauré" } ) ;
         }
         else
         {
@@ -115,7 +115,7 @@ delete_or_restore_mode = async ( req , res ) =>
                 { deleted: true  }  ,
                 { where: { id: mode_id } }
             );        
-            return res.status(200).json( { message : "La mode de projet a été bien supprimée" } ) ;
+            return res.status(200).json( { message : "Le mode de projet a été bien supprimé" } ) ;
         }
 
     }

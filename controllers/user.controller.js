@@ -12,13 +12,14 @@ create = async ( req , res ) =>
         }
         
         const password_ = await bcrypt.hash( req.body.password , 10 ) ;
-
         const new_user = await user_model.create( {
             nom : req.body.nom ,
             prenom : req.body.prenom ,
             email : req.body.email ,
             password : password_ ,
-            role : req.body.role || "Utilisateur"
+            sexe : req.body.sexe ,
+            date_naissance : req.body.date_naissance ,
+            id_role : req.body.id_role
         } ) ;
     
         return res.status(200).json( { message: "L'utilisateur a été bien ajoutée" , new_user , created : true  } ) ;
@@ -67,51 +68,8 @@ get_all_users = async ( req , res ) =>
     } 
 } ;
 
-// const create_admin = async () =>
-// {
-//     try 
-//     {
-        
-//         console.log("=====================================================================");
-//         console.log("Création administrateur");
-//         console.log("=====================================================================");
-        
-//         const administrateur = await user_model.findOne( { where: { email: "administrateur@gmail.com" } } ) ;
-//         if( administrateur )
-//         {
-//             console.log("=====================================================================");
-//             console.log("Administrateur déjà créé");
-//             console.log("=====================================================================");
-//         }
-        
-//         const password_ = await bcrypt.hash( "0000" , 10 ) ;
-
-//         const new_user = await user_model.create( {
-//             nom : "Administrateur" ,
-//             prenom : "" ,
-//             email : "administrateur@gmail.com" ,
-//             password : password_ ,
-//             id_role : 1 ,
-//             sexe: "M" ,
-//             date_naissance: "12/12/2024"
-//         } ) ;
-    
-//         console.log("=====================================================================");
-//         console.log("Administrateur créé");
-//         console.log("=====================================================================");
-
-//     } catch (error) 
-//     {
-//         console.log("=====================================================================");
-//         console.log("Erreur création administrateur");
-//         console.log(error);
-//         console.log("=====================================================================");
-//     }
-// }
-
 module.exports =    {  
                         create ,
                         get_user_logged ,
                         get_all_users ,
-                        // create_admin
                     }
