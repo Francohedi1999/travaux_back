@@ -12,6 +12,7 @@ const role_routes = require("./routes/role.route")
 const nature_projet_routes = require("./routes/nature_projet.route")
 const mode_projet_routes = require("./routes/mode_projet.route")
 const projet_routes = require("./routes/projet.route")
+const maj_passation_routes = require("./routes/maj_passation.route")
 
 
 
@@ -26,6 +27,7 @@ app.use( "/role" , role_routes ) ;
 app.use( "/nature_projet" , nature_projet_routes ) ;
 app.use( "/mode_projet" , mode_projet_routes ) ;
 app.use( "/projet" , projet_routes ) ;
+app.use( "/maj_passation" , maj_passation_routes ) ;
 
 
 app.listen(port, () => 

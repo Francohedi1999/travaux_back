@@ -12,7 +12,9 @@ const passation_model = sequelize_DB.define("passation",
     adresse : 
         { type: Sequelize.TEXT } ,
     date_etab_doc_init : 
-        { type: Sequelize.DATE }
+        { type: Sequelize.DATE } ,
+    annee : 
+        { type: Sequelize.INTEGER }
 });
 
 module.exports = passation_model ;

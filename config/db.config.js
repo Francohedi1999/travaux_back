@@ -23,7 +23,7 @@ const sequelize_DB = new Sequelize(
 
 const sync_db = async () => {
     try {
-        await sequelize_DB.sync({ force: false });
+        await sequelize_DB.sync({ force: true });
         
         const role_model = require('../models/role.model');
         const user_model = require('../models/user.model');
@@ -51,9 +51,10 @@ const sync_db = async () => {
             prenom: 'Administrateur',
             email: 'administrateur@gmail.com',
             password: password ,
-            sexe: 'M',
+            sexe: 'H',
             date_naissance: "12/12/1222",
             id_role: 1,
+            deleted: false
         }
         });
 

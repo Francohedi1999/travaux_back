@@ -14,14 +14,20 @@ login_user = async ( req , res ) =>
 
         if( user_ ) 
         {
-            const validation_user = await bcrypt.compare( password , user_.password ) ;
-            
-            if( validation_user )
+            if( user_.deleted === true )
             {
-                const token = await jwt.sign( { id: user_.id } , process.env.SECRET_KEY_JWT || "secret_key" , { expiresIn: "12h" } ) ;
-                return res.status(200).json( { message: "Vous êtes bien connecté" , data : token , logged: true } ) ;
+                return res.status(200).json( { message: "Votre compte a été désactivé" , logged: false } ) ;
             }
-            return res.status(200).json( { message: "Veuillez bien vérifier votre mot de passe" , logged: false } ) ;
+            else
+            {
+                const validation_user = await bcrypt.compare( password , user_.password ) ;            
+                if( validation_user )
+                {
+                    const token = await jwt.sign( { id: user_.id } , process.env.SECRET_KEY_JWT || "secret_key" , { expiresIn: "12h" } ) ;
+                    return res.status(200).json( { message: "Vous êtes bien connecté" , data : token , logged: true } ) ;
+                }
+                return res.status(200).json( { message: "Veuillez bien vérifier votre mot de passe" , logged: false } ) ;
+            }
         }
 
         return res.status(200).json( { message: "Veuillez bien vérifier votre email" , logged: false } ) ;
@@ -65,10 +71,8 @@ check_token = async ( req , res , next ) =>
     } 
     catch (error) 
     {
-        // throw error
         return res.status(400).json( { message: error } )
     }    
 } ;
- 
 
 module.exports = { login_user , check_token }

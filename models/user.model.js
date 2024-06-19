@@ -16,7 +16,9 @@ const user_model = sequelize_DB.define("user",
     sexe :
         { type: Sequelize.STRING } ,
     date_naissance :
-        { type: Sequelize.DATE }
+        { type: Sequelize.DATE } ,
+    deleted :
+        { type: Sequelize.BOOLEAN }
 });
 
 module.exports = user_model ;

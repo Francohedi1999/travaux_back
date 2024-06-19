@@ -11,10 +11,8 @@ create = async ( req , res ) =>
             nom_prmp : req.body.nom_prmp ,
             adresse : req.body.adresse ,
             date_etab_doc_init : req.body.date_etab_doc_init ,
-            numero : req.body.numero ,
-            date_premier_maj : req.body.date_premier_maj ,
-            num_pres_maj : req.body.num_pres_maj ,
-            id_u : user.id
+            annee : req.body.annee ,
+            id_user : user.id
         } );
 
         return res.status(200).json( { message: "La passation a été bien ajoutée" , new_passation , created: true } ) ;
