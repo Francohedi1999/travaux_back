@@ -19,7 +19,7 @@ create = async ( req , res ) =>
         }) );
         await projet_model.bulkCreate(projets_data);
 
-        res.status(200).json({ message: "La mise à jour a été bien ajoutée" });
+        res.status(200).json( { message: "La mise à jour a été bien ajoutée" } );
     } 
     catch( error )
     {
@@ -32,4 +32,24 @@ create = async ( req , res ) =>
     }
 }
 
-module.exports = {  create }
+get_all_majs = async ( req , res ) =>
+{
+    try
+    {
+        const id_passation = req.params.id_passation ;
+        const majs = await maj_passation_model.findAll( { where: { id_passation : id_passation } ,
+                                                        order: [['numero_maj', 'ASC']] } ) ;
+        return res.status(200).json( majs ) ;
+    } 
+    catch( error )
+    {
+        console.log("=====================================================================");
+        console.log("Erreur get all projects");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json( error ) ; 
+    }
+}
+
+module.exports = { create , get_all_majs }

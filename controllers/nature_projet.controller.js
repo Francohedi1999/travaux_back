@@ -9,11 +9,11 @@ create = async ( req , res ) =>
         const nature_projet = await nature_projet_model.findOne( { where : { designation: designation } } ) ;
         if( nature_projet )
         {
-            return res.status(200).json( { message: "Cette nature de projet existe déjà" , nature_projet , created : false } ) ;
+            return res.status(200).json( { message: "Ce nature de passation existe déjà" , nature_projet , created : false } ) ;
         }
     
         const nature_projet_ = await nature_projet_model.create( { designation: designation , deleted : false } ) ;
-        return res.status(200).json( { message: "La nature de projet a été bien ajoutée" , nature_projet_ , created : true } ) ;
+        return res.status(200).json( { message: "La nature de passation a été bien ajoutée" , nature_projet_ , created : true } ) ;
     } 
     catch( error )
     {
@@ -95,24 +95,30 @@ update_nature = async ( req , res ) =>
     try
     {
         const nature_id = req.params.id ;
-
-        const designation = req.body.designation ;
-        const deleted = req.body.deleted ;
-
         const nature = await nature_projet_model.findOne( { where : { id: nature_id } } ) ;
-
         if( !nature )
         {
-            return res.status(200).json( {message : "Non trouvée" } ) ;
-        }
+            return res.status(200).json( {message : "Non trouvée" , updated: false } ) ;
+        }        
         
+        const designation = req.body.designation ;
+        const deleted = req.body.deleted || nature.deleted ;
+
+        if (nature.designation !== designation) 
+        {
+            const nature_ = await nature_projet_model.findOne( { where: { designation } } );
+            if ( nature_ ) 
+            {
+                return res.status(200).json({ message: "Ce nature de passation existe déjà" , updated: false });
+            }
+        }
+
         await nature_projet_model.update(
-            { deleted: deleted } ,
-            { designation: designation } ,
+            { deleted: deleted , designation: designation } ,
             { where: { id: nature_id } }
         );
         
-        return res.status(200).json( { message : "La nature de projet a été bien mise à jour" } ) ;
+        return res.status(200).json( { message : "La nature de passation a été bien mise à jour" , updated: true } ) ;
     }
     catch( error )
     {

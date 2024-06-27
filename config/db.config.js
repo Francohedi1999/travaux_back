@@ -23,9 +23,9 @@ const sequelize_DB = new Sequelize(
 
 const sync_db = async () => {
     try {
-        await sequelize_DB.sync({ force: true });
+        await sequelize_DB.sync({ force: false });
         
-        const role_model = require('../models/role.model');
+        const role_model = require('../models/role.model'); 
         const user_model = require('../models/user.model');
         const status_projet_model = require('../models/status_projet.model') ;
         const mode_projet_model = require('../models/mode_projet.model') ;
