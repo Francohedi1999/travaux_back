@@ -13,12 +13,12 @@ create = async ( req , res ) =>
         }
     
         const nature_projet_ = await nature_projet_model.create( { designation: designation , deleted : false } ) ;
-        return res.status(200).json( { message: "La nature de projet a été bien ajouté" , nature_projet_ , created : true } ) ;
+        return res.status(200).json( { message: "La nature de projet a été bien ajoutée" , nature_projet_ , created : true } ) ;
     } 
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur create role");
+        console.log("Erreur create nature");
         console.log(error);
         console.log("=====================================================================");
 
@@ -37,7 +37,7 @@ get_all_nature_projet = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all projets");
+        console.log("Erreur get all natures");
         console.log(error);
         console.log("=====================================================================");
 
@@ -57,7 +57,7 @@ get_nature_not_deleted = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all projets");
+        console.log("Erreur get all natures non supprimées");
         console.log(error);
         console.log("=====================================================================");
 
@@ -74,7 +74,7 @@ get_nature_by_id = async ( req , res ) =>
 
         if( !nature_projet )
         {
-            return res.status(200).json( {message : "Non trouvé" } ) ;
+            return res.status(200).json( {message : "Non trouvée" } ) ;
         }
                 
         return res.status(200).json( nature_projet ) ;
@@ -82,7 +82,7 @@ get_nature_by_id = async ( req , res ) =>
     catch( error )
     {
         console.log("");
-        console.log("Erreur get projet by Id");
+        console.log("Erreur get nature by Id");
         console.log(error);
         console.log("");
 
@@ -95,35 +95,29 @@ update_nature = async ( req , res ) =>
     try
     {
         const nature_id = req.params.id ;
+
+        const designation = req.body.designation ;
+        const deleted = req.body.deleted ;
+
         const nature = await nature_projet_model.findOne( { where : { id: nature_id } } ) ;
 
         if( !nature )
         {
-            return res.status(200).json( {message : "Non trouvé" } ) ;
+            return res.status(200).json( {message : "Non trouvée" } ) ;
         }
-
-        if( nature.deleted )
-        {
-            await nature_projet_model.update(
-                { deleted: false } ,
-                { where: { id: nature_id } }
-            );
-            return res.status(200).json( { message : "La nature de projet a été bien restaurée" } ) ;
-        }
-        else
-        {
-            await nature_projet_model.update( 
-                { deleted: true } ,
-                { where: { id: nature_id } }
-            );
-            return res.status(200).json( { message : "La nature de projet a été bien supprimée" } ) ;
-        }
-
+        
+        await nature_projet_model.update(
+            { deleted: deleted } ,
+            { designation: designation } ,
+            { where: { id: nature_id } }
+        );
+        
+        return res.status(200).json( { message : "La nature de projet a été bien mise à jour" } ) ;
     }
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur delete projet");
+        console.log("Erreur update nature");
         console.log(error);
         console.log("=====================================================================");
 

@@ -13,7 +13,7 @@ create = async ( req , res ) =>
         }
     
         const mode_projet_ = await mode_projet_model.create( { designation: designation } ) ;
-        return res.status(200).json( { message: "Le mode de projet a été bien ajouté" , mode_projet_ , created : true } ) ;
+        return res.status(200).json( { message: "Le mode de projet a été bien ajoutée" , mode_projet_ , created : true } ) ;
     } 
     catch( error )
     {
@@ -37,7 +37,7 @@ get_all_mode_projet = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all roles");
+        console.log("Erreur get all mode");
         console.log(error);
         console.log("=====================================================================");
 
@@ -56,7 +56,7 @@ get_mode_not_deleted = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all roles");
+        console.log("Erreur get all mode non supprimée");
         console.log(error);
         console.log("=====================================================================");
 
@@ -73,7 +73,7 @@ get_mode_by_id = async ( req , res ) =>
 
         if( !mode_projet )
         {
-            return res.status(200).json( {message : "Non trouvé" } ) ;
+            return res.status(200).json( {message : "Non trouvée" } ) ;
         }
                 
         return res.status(200).json( mode_projet ) ;
@@ -94,35 +94,28 @@ update_mode = async ( req , res ) =>
     try
     {
         const mode_id = req.params.id ;
+
+        const designation = req.body.designation ;
+        const deleted = req.body.deleted ;
+        
         const mode = await mode_projet_model.findOne( { where : { id: mode_id } } ) ;
 
         if( !mode )
         {
-            return res.status(200).json( {message : "Non trouvé" } ) ;
+            return res.status(200).json( {message : "Non trouvée" } ) ;
         }
-
-        if( mode.deleted === true )
-        {
-            await mode_projet_model.update(
-                { deleted: false } ,
-                { where: { id: mode_id } }
-            );
-            return res.status(200).json( { message : "Le mode de projet a été bien restauré" } ) ;
-        }
-        else
-        {
-            await mode_projet_model.update(
-                { deleted: true  }  ,
-                { where: { id: mode_id } }
-            );        
-            return res.status(200).json( { message : "Le mode de projet a été bien supprimé" } ) ;
-        }
+        await mode_projet_model.update(
+            { deleted: deleted } ,
+            { designation: designation } ,
+            { where: { id: mode_id } }
+        );
+        return res.status(200).json( { message : "Le mode de projet a été bien mise à jour" } ) ;
 
     }
     catch( error )
     {
         console.log("");
-        console.log("Erreur delete projet");
+        console.log("Erreur update mode");
         console.log(error);
         console.log("");
 
