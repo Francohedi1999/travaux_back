@@ -26,9 +26,7 @@ const projet_model = sequelize_DB.define("projet",
     date_prev_ouv_plis : 
         { type: Sequelize.DATE } ,
     date_prev_att : 
-        { type: Sequelize.DATE } ,
-    date_prev_fin : 
-        { type: Sequelize.DATE } 
+        { type: Sequelize.DATE }
 });
 
 module.exports = projet_model ;

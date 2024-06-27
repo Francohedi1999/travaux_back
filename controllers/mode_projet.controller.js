@@ -89,7 +89,7 @@ get_mode_by_id = async ( req , res ) =>
     }
 }
 
-delete_or_restore_mode = async ( req , res ) =>
+update_mode = async ( req , res ) =>
 {
     try
     {
@@ -135,5 +135,5 @@ module.exports = {
                     get_all_mode_projet ,
                     get_mode_not_deleted ,
                     get_mode_by_id ,
-                    delete_or_restore_mode 
+                    update_mode 
                 }

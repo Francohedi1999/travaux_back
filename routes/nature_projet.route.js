@@ -5,7 +5,7 @@ const   {
                 get_all_nature_projet ,
                 get_nature_not_deleted ,
                 get_nature_by_id ,
-                delete_or_restore_nature 
+                update_nature 
         } 
         = require("../controllers/nature_projet.controller")
 
@@ -15,6 +15,6 @@ router.post( "/" , [ check_token , create ] ) ;
 router.get( "/" , [ check_token , get_all_nature_projet ] ) ;
 router.get( "/not_deleted" , [ check_token , get_nature_not_deleted ] ) ;
 router.get( "/:id" , [ check_token , get_nature_by_id ] ) ;
-router.put( "/delete_restore/:id" , [ check_token , delete_or_restore_nature ] ) ;
+router.put( "/delete_restore/:id" , [ check_token , update_nature ] ) ;
 
 module.exports = router 

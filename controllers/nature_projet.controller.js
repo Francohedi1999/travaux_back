@@ -90,7 +90,7 @@ get_nature_by_id = async ( req , res ) =>
     }
 }
 
-delete_or_restore_nature = async ( req , res ) =>
+update_nature = async ( req , res ) =>
 {
     try
     {
@@ -135,4 +135,4 @@ module.exports = {  create ,
                     get_all_nature_projet ,
                     get_nature_not_deleted ,
                     get_nature_by_id ,
-                    delete_or_restore_nature }
+                    update_nature }

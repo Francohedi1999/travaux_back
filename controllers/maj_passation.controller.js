@@ -5,15 +5,17 @@ create = async ( req , res ) =>
     try
     {    
         const id_passation = req.body.id_passation ;
+        const date_maj = req.body.date_maj ;
         const projets = req.body.projets ;
 
         const count_maj_passations = await maj_passation_model.count({ where: { id_passation: id_passation } }); 
-        const maj_passation = await maj_passation_model.create( { date_maj: "11-11-1111" , numero_maj: count_maj_passations + 1 , id_passation: id_passation } ) ;
+        const maj_passation = await maj_passation_model.create( { date_maj: date_maj , numero_maj: count_maj_passations + 1 , id_passation: id_passation } ) ;
         
         const id_maj = maj_passation.id ;
         const projets_data = projets.map( projet => ({
             ...projet ,
-            id_maj: id_maj
+            id_maj: id_maj ,
+            id_status_projet: 1 
         }) );
         await projet_model.bulkCreate(projets_data);
 
