@@ -18,7 +18,7 @@ create = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur create nature");
+        console.log("Erreur create() nature");
         console.log(error);
         console.log("=====================================================================");
 
@@ -37,7 +37,7 @@ get_all_nature_projet = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all natures");
+        console.log("Erreur get_all_nature_projet()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -57,7 +57,7 @@ get_nature_not_deleted = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all natures non supprimées");
+        console.log("Erreur get_nature_not_deleted()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -82,7 +82,7 @@ get_nature_by_id = async ( req , res ) =>
     catch( error )
     {
         console.log("");
-        console.log("Erreur get nature by Id");
+        console.log("Erreur get_nature_by_id()");
         console.log(error);
         console.log("");
 
@@ -123,7 +123,7 @@ update_nature = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur update nature");
+        console.log("Erreur update_nature()");
         console.log(error);
         console.log("=====================================================================");
 

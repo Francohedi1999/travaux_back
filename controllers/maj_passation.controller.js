@@ -24,7 +24,7 @@ create = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur create role");
+        console.log("Erreur create() maj_passation");
         console.log(error);
         console.log("=====================================================================");
 
@@ -44,7 +44,7 @@ get_all_majs_passation = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all majs by passation");
+        console.log("Erreur get_all_majs_passation()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -64,7 +64,7 @@ get_maj_by_id = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all projects");
+        console.log("Erreur get_maj_by_id()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -79,18 +79,51 @@ get_maj_by_passation_and_num_maj = async ( req , res ) =>
         const id_passation = req.params.id_passation ;
         const numero_maj = req.params.numero_maj ;
         const maj = await maj_passation_model.findOne({ where: { id_passation : id_passation , numero_maj: numero_maj } } ) ;
-
-        console.log("=====================================================================");
-        console.log("maj");
-        console.log(maj);
-        console.log("=====================================================================");
-
         return res.status(200).json( maj ) ;
     } 
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all projects");
+        console.log("Erreur get_maj_by_passation_and_num_maj()");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json( error ) ; 
+    }
+}
+
+update_maj = async ( req , res ) =>
+{
+    try
+    {
+        const id_maj = req.params.id_maj ;
+        const status = req.body.status ;
+        const maj = await maj_passation_model.findOne({ where: { id: id_maj } } ) ;
+        if( !maj )
+        {
+            return res.status(200).json( {message : "Mise à jour non trouvée" } ) ;
+        }
+
+        await maj_passation_model.update(
+            { status_: status } ,
+            { where: { id: id_maj } }
+        );
+
+        let message_ = null ;
+        if( status == true )
+        {
+            message_ = "Mise à jour a été publiée"
+        }
+        else
+        {
+            message_ = "Mise à jour a été annulée"
+        }
+        return res.status(200).json( { message : message_ } ) ;
+    } 
+    catch( error )
+    {
+        console.log("=====================================================================");
+        console.log("Erreur update_maj()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -100,5 +133,6 @@ get_maj_by_passation_and_num_maj = async ( req , res ) =>
 
 module.exports = {  create , 
                     get_all_majs_passation , 
+                    update_maj ,
                     get_maj_by_passation_and_num_maj ,
                     get_maj_by_id }

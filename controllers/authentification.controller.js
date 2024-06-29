@@ -35,7 +35,7 @@ login_user = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur login user");
+        console.log("Erreur login_user()");
         console.log(error);
         console.log("=====================================================================");
 

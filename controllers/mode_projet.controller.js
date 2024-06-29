@@ -18,7 +18,7 @@ create = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur create role");
+        console.log("Erreur create() mode");
         console.log(error);
         console.log("=====================================================================");
 
@@ -37,7 +37,7 @@ get_all_mode_projet = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all mode");
+        console.log("Erreur get_all_mode_projet()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -81,7 +81,7 @@ get_mode_by_id = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get passation by Id");
+        console.log("Erreur get_mode_by_id()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -122,7 +122,7 @@ update_mode = async ( req , res ) =>
     catch( error )
     {
         console.log("");
-        console.log("Erreur update mode");
+        console.log("Erreur update_mode()");
         console.log(error);
         console.log("");
 

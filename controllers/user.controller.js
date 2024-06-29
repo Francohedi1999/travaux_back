@@ -51,6 +51,11 @@ get_user_logged = async ( req , res ) =>
     } 
     catch (error) 
     {
+        console.log("=====================================================================");
+        console.log("Erreur get_user_logged()");
+        console.log(error);
+        console.log("=====================================================================");
+
         return res.status(400).json( { message: error } )
     }   
 } ;
@@ -65,6 +70,11 @@ get_all_users = async ( req , res ) =>
     }
     catch (error) 
     {
+        console.log("=====================================================================");
+        console.log("Erreur get_all_users()");
+        console.log(error);
+        console.log("=====================================================================");
+
         return res.status(400).json( { message: error } )
     } 
 } ;
@@ -102,7 +112,7 @@ delete_or_restore_user = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur upadte user");
+        console.log("Erreur delete_or_restore_user()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -126,6 +136,11 @@ get_user_by_id = async ( req , res ) =>
     } 
     catch (error) 
     {
+        console.log("=====================================================================");
+        console.log("Erreur get_user_by_id");
+        console.log(error);
+        console.log("=====================================================================");
+
         return res.status(400).json( { message: error } )
     }   
 } ;

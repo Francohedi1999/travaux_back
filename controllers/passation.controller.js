@@ -20,7 +20,7 @@ create = async ( req , res ) =>
     catch( error ) 
     {
         console.log("=====================================================================");
-        console.log("Erreur create passation");
+        console.log("Erreur create() passation");
         console.log(error);
         console.log("=====================================================================");
 
@@ -39,7 +39,7 @@ get_all_passation = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get all passation");
+        console.log("Erreur get_all_passation()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -69,7 +69,7 @@ get_passation_by_id = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get passation by id");
+        console.log("Erreur get_passation_by_id()");
         console.log(error);
         console.log("=====================================================================");
 
