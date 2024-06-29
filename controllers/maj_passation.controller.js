@@ -1,4 +1,4 @@
-const { maj_passation_model , projet_model } = require("../migrations") ;
+const { maj_passation_model , projet_model , passation_model } = require("../migrations") ;
 
 create = async ( req , res ) =>
 {
@@ -32,7 +32,7 @@ create = async ( req , res ) =>
     }
 }
 
-get_all_majs = async ( req , res ) =>
+get_all_majs_passation = async ( req , res ) =>
 {
     try
     {
@@ -40,6 +40,26 @@ get_all_majs = async ( req , res ) =>
         const majs = await maj_passation_model.findAll( { where: { id_passation : id_passation } ,
                                                         order: [['numero_maj', 'ASC']] } ) ;
         return res.status(200).json( majs ) ;
+    } 
+    catch( error )
+    {
+        console.log("=====================================================================");
+        console.log("Erreur get all majs by passation");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json( error ) ; 
+    }
+}
+
+get_maj_by_id = async ( req , res ) =>
+{
+    try
+    {
+        const id_maj = req.params.id_maj ;
+        const maj = await maj_passation_model.findOne({ where: { id : id_maj } , 
+                                                        include: [ { model: passation_model , as: 'passation' } ] } ) ;
+        return res.status(200).json( maj ) ;
     } 
     catch( error )
     {
@@ -52,4 +72,33 @@ get_all_majs = async ( req , res ) =>
     }
 }
 
-module.exports = { create , get_all_majs }
+get_maj_by_passation_and_num_maj = async ( req , res ) =>
+{
+    try
+    {
+        const id_passation = req.params.id_passation ;
+        const numero_maj = req.params.numero_maj ;
+        const maj = await maj_passation_model.findOne({ where: { id_passation : id_passation , numero_maj: numero_maj } } ) ;
+
+        console.log("=====================================================================");
+        console.log("maj");
+        console.log(maj);
+        console.log("=====================================================================");
+
+        return res.status(200).json( maj ) ;
+    } 
+    catch( error )
+    {
+        console.log("=====================================================================");
+        console.log("Erreur get all projects");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json( error ) ; 
+    }
+}
+
+module.exports = {  create , 
+                    get_all_majs_passation , 
+                    get_maj_by_passation_and_num_maj ,
+                    get_maj_by_id }
