@@ -11,6 +11,6 @@ const { check_token } = require("../controllers/authentification.controller") ;
 
 router.get( "/projets/:id_maj" , [ check_token , get_all_projets_by_maj ] ) ;
 router.get( "/:id" , [ check_token , get_projet_by_id ] ) ;
-router.get( "/passation/:id" , [ check_token , get_projets_by_passation ] ) ;  
+// router.get( "/passation/:id" , [ check_token , get_projets_by_passation ] ) ;  
 
 module.exports = router 

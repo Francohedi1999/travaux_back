@@ -43,7 +43,23 @@ get_projet_by_id = async ( req , res ) =>
     try
     {
         const projet_id = req.params.id
-        const projet = await projet_model.findOne( { where: { id: projet_id } } ) ;
+        const projet = await projet_model.findOne( { 
+            where: { id: projet_id } ,
+            include: [ 
+                {
+                    model: status_projet_model,
+                    as: 'status_projet'
+                },
+                {
+                    model: nature_projet_model,
+                    as: 'nature_projet'
+                },
+                {
+                    model: mode_projet_model,
+                    as: 'mode_projet'
+                }
+            ] 
+        } ) ;
         return res.status(200).json( projet ) ;
     } 
     catch( error )
@@ -57,29 +73,29 @@ get_projet_by_id = async ( req , res ) =>
     }
 }
 
-get_projets_by_passation = async ( req , res ) =>
-{
-    try
-    {
-        const passation_id = req.params.id
-        const projets = await projet_model.findAll( { where: { id_p: passation_id } } ) ;
-        return res.status(200).json( projets ) ;
-    } 
-    catch( error )
-    {
-        console.log("=====================================================================");
-        console.log("Erreur get_projets_by_passation()");
-        console.log(error);
-        console.log("=====================================================================");
+// get_projets_by_passation = async ( req , res ) =>
+// {
+//     try
+//     {
+//         const passation_id = req.params.id
+//         const projets = await projet_model.findAll( { where: { id_p: passation_id } } ) ;
+//         return res.status(200).json( projets ) ;
+//     } 
+//     catch( error )
+//     {
+//         console.log("=====================================================================");
+//         console.log("Erreur get_projets_by_passation()");
+//         console.log(error);
+//         console.log("=====================================================================");
 
-        return res.status(400).json( error ) ; 
-    }
-}
+//         return res.status(400).json( error ) ; 
+//     }
+// }
 
 
 module.exports = {
-    create ,
+    // create ,
     get_all_projets_by_maj ,
     get_projet_by_id ,
-    get_projets_by_passation 
+    // get_projets_by_passation 
 }
