@@ -83,7 +83,7 @@ const sync_db = async () => {
         console.log('');
 
         await nature_projet_model.findOrCreate({  where: { id: 1 } , 
-                                                defaults: { designation: "Travaux" , deleted: false } });
+                                                    defaults: { designation: "Travaux" , deleted: false } });
         await nature_projet_model.findOrCreate({  where: { id: 2 } , 
                                                     defaults: { designation: "Prestation intellectuelle" , deleted: false } });
     } 

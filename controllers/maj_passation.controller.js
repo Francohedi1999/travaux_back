@@ -98,27 +98,42 @@ update_maj = async ( req , res ) =>
     {
         const id_maj = req.params.id_maj ;
         const status = req.body.status ;
+
         const maj = await maj_passation_model.findOne({ where: { id: id_maj } } ) ;
         if( !maj )
         {
-            return res.status(200).json( {message : "Mise à jour non trouvée" } ) ;
+            return res.status(200).json( { message : "Mise à jour non trouvée" , published: false } ) ;
         }
 
-        await maj_passation_model.update(
-            { status_: status } ,
-            { where: { id: id_maj } }
-        );
-
         let message_ = null ;
+        let published_ = false ;
         if( status == true )
         {
-            message_ = "Mise à jour a été publiée"
+            const maj_published = await maj_passation_model.findOne( { where: { id_passation: maj.id_passation , status_: status } } ) ;
+            if( maj_published )
+            {
+                return res.status(200).json( { message : "Il existe déjà une mise à jour publiée", published: false } ) ;
+            }
+
+            await maj_passation_model.update(
+                { status_: status } ,
+                { where: { id: id_maj } }
+            );
+            await projet_model.update( { status_: status } , { where: { id_maj: id_maj } } ) ;
+            message_ = "Mise à jour a été publiée" ;
+            published_ = true ;
         }
         else
         {
-            message_ = "Mise à jour a été annulée"
+            await maj_passation_model.update(
+                { status_: status } ,
+                { where: { id: id_maj } }
+            );
+            await projet_model.update( { status_: status } , { where: { id_maj: id_maj } } ) ;
+            message_ = "Mise à jour a été annulée" ;
+            published_ = true ;
         }
-        return res.status(200).json( { message : message_ } ) ;
+        return res.status(200).json( { message : message_, published: published_ } ) ;
     } 
     catch( error )
     {
