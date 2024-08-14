@@ -1,4 +1,6 @@
 const { maj_passation_model , projet_model , passation_model } = require("../migrations") ;
+const { Op } = require("sequelize")
+const moment = require("moment") ;
 
 create = async ( req , res ) =>
 {
@@ -37,9 +39,55 @@ get_all_majs_passation = async ( req , res ) =>
     try
     {
         const id_passation = req.params.id_passation ;
-        const majs = await maj_passation_model.findAll( { where: { id_passation : id_passation } ,
-                                                        order: [['numero_maj', 'ASC']] } ) ;
-        return res.status(200).json( majs ) ;
+
+        let start_date = req.query.start_date ;
+        let end_date = req.query.end_date ;
+        const page = req.query.page || 1 ;
+        const limit= req.query.limit || 10;
+        const status= req.query.status;
+
+        const page_number = parseInt( page );
+        const limit_number = parseInt( limit );
+        const offset = ( page_number - 1 ) * limit_number;
+
+        const where_condition = { id_passation: id_passation , };
+
+        console.log("Start date:", start_date);
+        console.log("End date:", end_date);
+
+        if ( start_date && end_date ) 
+        {
+            end_date = moment(end_date).add( 1 , 'days' ).format('YYYY-MM-DD');
+            where_condition.date_maj = { [Op.between]: [start_date, end_date] };
+        } 
+        else if ( start_date && !end_date ) 
+        {
+            where_condition.date_maj = { [Op.gte]: start_date };
+        } 
+        else if ( end_date && !start_date ) 
+        {
+            end_date = moment(end_date).add( 1 , 'days' ).format('YYYY-MM-DD');
+            where_condition.date_maj = { [Op.lte]: end_date };
+        }
+
+        if (status !== "undefined") 
+        {
+            where_condition.status_ = status === 'true'; 
+        }
+
+        const majs = await maj_passation_model.findAndCountAll({
+            where: where_condition,
+            order: [ ['numero_maj', 'ASC'] ],
+            limit: limit_number,
+            offset: offset
+        });
+        
+        return res.status(200).json({
+            total_items: majs.count ,
+            data: majs.rows ,
+            current_page: page_number ,
+            total_pages: Math.ceil( majs.count / limit_number )
+        });
     } 
     catch( error )
     {
