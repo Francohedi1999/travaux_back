@@ -1,5 +1,5 @@
 const { maj_passation_model , projet_model , passation_model } = require("../migrations") ;
-const { Op } = require("sequelize")
+const { Op } = require("sequelize") ;
 const moment = require("moment") ;
 
 create = async ( req , res ) =>
