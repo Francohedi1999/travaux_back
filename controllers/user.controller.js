@@ -103,6 +103,7 @@ get_all_users = async ( req , res ) =>
 
         const users = await user_model.findAndCountAll({
             where: where_condition ,
+            include: [ { model: role_model, as: 'role' } ] ,
             limit: limit_number ,
             offset: offset
         });
