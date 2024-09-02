@@ -14,6 +14,7 @@ const mode_projet_routes = require("./routes/mode_projet.route")
 const projet_routes = require("./routes/projet.route")
 const maj_passation_routes = require("./routes/maj_passation.route")
 const avancement_projet_routes = require("./routes/avancement_projet.route")
+const status_projet_routes = require("./routes/status_projet.route") 
 
 
 
@@ -30,6 +31,7 @@ app.use( "/mode_projet" , mode_projet_routes ) ;
 app.use( "/projet" , projet_routes ) ;
 app.use( "/maj_passation" , maj_passation_routes ) ;
 app.use( "/avancement_projet" , avancement_projet_routes ) ;
+app.use( "/status_projet" , status_projet_routes ) ;
 
 
 app.listen(port, () => 

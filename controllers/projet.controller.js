@@ -2,14 +2,52 @@ const { projet_model ,
         status_projet_model , 
         nature_projet_model , 
         mode_projet_model } = require("../migrations") ;
+const { Op } = require("sequelize") ;
 
 get_all_projets_by_maj = async ( req , res ) =>
 {
     try
     {
         const id_maj = req.params.id_maj ;
-        const projets = await projet_model.findAll( { 
-            where: { id_maj: id_maj } ,
+
+        const id = req.query.id; 
+        const objet = req.query.objet; 
+        const id_nature = req.query.id_nature ; 
+        const id_mode = req.query.id_mode ; 
+        const id_status_projet = req.query.id_status_projet ; 
+
+        const page = req.query.page || 1 ;
+        const limit= req.query.limit || 10;
+
+        const page_number = parseInt( page );
+        const limit_number = parseInt( limit );
+        const offset = ( page_number - 1 ) * limit_number;
+
+        const where_condition = {} ;
+        where_condition.id_maj = id_maj ;
+        if (id) 
+        {
+            where_condition.id = id ; 
+        }
+        if (objet) 
+        {
+            where_condition.objet = { [Op.like]: `%${objet}%` }; 
+        }
+        if (id_nature) 
+        {
+            where_condition.id_nature = id_nature ; 
+        }
+        if (id_mode) 
+        {
+            where_condition.id_mode = id_mode ; 
+        }
+        if (id_status_projet) 
+        {
+            where_condition.id_status_projet = id_status_projet ; 
+        }
+
+        const projets = await projet_model.findAndCountAll( { 
+            where: where_condition  ,
             include: [ 
                 {
                     model: status_projet_model,
@@ -23,9 +61,17 @@ get_all_projets_by_maj = async ( req , res ) =>
                     model: mode_projet_model,
                     as: 'mode_projet'
                 }
-            ] 
+            ]  ,
+            limit: limit_number ,
+            offset: offset
         } ) ;
-        return res.status(200).json( projets ) ;
+
+        return res.status(200).json({
+            total_items: projets.count ,
+            data: projets.rows ,
+            current_page: page_number ,
+            total_pages: Math.ceil( projets.count / limit_number )
+        });
     } 
     catch( error )
     {
