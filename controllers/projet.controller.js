@@ -3,6 +3,7 @@ const { projet_model ,
         nature_projet_model , 
         mode_projet_model } = require("../migrations") ;
 const { Op } = require("sequelize") ;
+const Sequelize = require("sequelize");
 
 get_all_projets_by_maj = async ( req , res ) =>
 {
@@ -88,7 +89,7 @@ get_projet_by_id = async ( req , res ) =>
 {
     try
     {
-        const projet_id = req.params.id
+        const projet_id = req.params.id ;
         const projet = await projet_model.findOne( { 
             where: { id: projet_id } ,
             include: [ 
@@ -138,10 +139,53 @@ get_projet_by_id = async ( req , res ) =>
 //     }
 // }
 
+get_total_projects_by_status_projet = async (req, res) => 
+{
+    try 
+    {
+        const total_projects_by_status = await projet_model.findAll({
+            attributes: [
+                'id_status_projet',
+                [Sequelize.fn('COUNT', Sequelize.col('projet.id')), 'total_projets'],
+                'status_projet.designation' 
+            ],
+            where: {
+                status_: true
+            },
+            include: [
+                {
+                    model: status_projet_model,
+                    attributes: ['designation'] 
+                }
+            ],
+            group: ['id_status_projet', 'status_projet.designation']
+        });
+
+        if (!total_projects_by_status || total_projects_by_status.length === 0) 
+        {
+            return res.status(200).json({ message: "Aucun projet trouvé." });
+        }
+
+        return res.status(200).json(total_projects_by_status);
+
+    } 
+    catch (error) 
+    {
+        console.log("=====================================================================");
+        console.log("Erreur get_total_projects_by_status_projet()");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json(error);
+    }
+}
+
+
 
 module.exports = {
     // create ,
     get_all_projets_by_maj ,
     get_projet_by_id ,
+    get_total_projects_by_status_projet
     // get_projets_by_passation 
 }
