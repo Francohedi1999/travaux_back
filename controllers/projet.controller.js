@@ -147,7 +147,8 @@ get_total_projects_by_status_projet = async (req, res) =>
             attributes: [
                 'id_status_projet',
                 [Sequelize.fn('COUNT', Sequelize.col('projet.id')), 'total_projets'],
-                'status_projet.designation' 
+                'status_projet.designation',
+                'status_projet.id'  // Include this in the attributes
             ],
             where: {
                 status_: true
@@ -155,10 +156,10 @@ get_total_projects_by_status_projet = async (req, res) =>
             include: [
                 {
                     model: status_projet_model,
-                    attributes: ['designation'] 
+                    attributes: ['id', 'designation']  // Include 'id' in the attributes
                 }
             ],
-            group: ['id_status_projet', 'status_projet.designation']
+            group: ['projet.id_status_projet', 'status_projet.designation', 'status_projet.id']  // Add 'status_projet.id' to the GROUP BY clause
         });
 
         if (!total_projects_by_status || total_projects_by_status.length === 0) 
