@@ -76,7 +76,7 @@ import_EXCEL_avancement = async (req, res) => {
     try {
         if (!req.file) {
             console.log("Aucun fichier n'a été uploadé");
-            return res.status(400).json({ message: "Aucun fichier n'a été uploadé" });
+            return res.status(200).json({ message: "Aucun fichier n'a été uploadé" , success: false });
         }
 
         const column_mapping = { code: 'CODE', pourcentage: 'AVANCEMENT' };
@@ -87,7 +87,7 @@ import_EXCEL_avancement = async (req, res) => {
         const work_sheet = work_book.getWorksheet(1);
 
         if (!work_sheet) {
-            return res.status(400).json({ message: "Le fichier Excel est vide ou invalide" });
+            return res.status(200).json({ message: "Le fichier Excel est vide ou invalide" , success: false });
         }
 
         const header_row = work_sheet.getRow(1);
@@ -95,14 +95,15 @@ import_EXCEL_avancement = async (req, res) => {
 
         header_row.eachCell((cell, col_number) => {
             Object.keys(column_mapping).forEach((key) => {
-                if (cell.value && cell.value.toString().trim().toUpperCase() === column_mapping[key]) {
+                if (cell.value && cell.value.toString().trim().toLowerCase() === column_mapping[key].toLowerCase()) {
                     column_indices[key] = col_number;
                 }
             });
         });
 
         if (!column_indices.code || !column_indices.pourcentage) {
-            return res.status(400).json({ message: "Le fichier doit contenir les colonnes 'CODE' et 'AVANCEMENT'" });
+            return res.status(200).json({ 
+                message: "Le fichier doit contenir les colonnes 'CODE' et 'AVANCEMENT'" , success: false });
         }
 
         const promises = [];
@@ -113,7 +114,7 @@ import_EXCEL_avancement = async (req, res) => {
                 const avancementCell = row.getCell(column_indices.pourcentage);
 
                 if (!codeCell || !avancementCell) {
-                    promises.push(Promise.resolve(res.status(400).json({ 
+                    promises.push(Promise.resolve(res.status(200).json({ 
                         message: "Ligne " + row_number + " invalide : Cellules manquantes", 
                         success: false 
                     })));
@@ -130,14 +131,14 @@ import_EXCEL_avancement = async (req, res) => {
                 const { id_projet, pourcentage, description, date_enreg } = avancement;
 
                 if (!id_projet || isNaN(pourcentage)) {
-                    promises.push(Promise.resolve(res.status(400).json({ 
+                    promises.push(Promise.resolve(res.status(200).json({ 
                         message: "Ligne " + row_number + " invalide : Projet ou pourcentage manquant", 
                         success: false 
                     })));
                     return;
                 }
 
-                const processRow = async () => {
+                const process_row = async () => {
                     const total_pourcentage_actuel = await avancement_projet_model.findOne({
                         attributes: [
                             [Sequelize.fn('SUM', Sequelize.col('pourcentage')), 'total_pourcentage']
@@ -181,11 +182,10 @@ import_EXCEL_avancement = async (req, res) => {
                     }
                 };
 
-                promises.push(processRow());
+                promises.push(process_row());
             }
         });
 
-        // Await the completion of all the promises
         await Promise.all( promises );
 
         return res.status(200).json({ message: "Les avancements ont été bien importés", success: true });
