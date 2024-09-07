@@ -71,6 +71,11 @@ add_avancement = async ( req , res ) =>
     }
 } 
 
+import_EXCEL_avancement = async (req, res) => 
+{
+    
+}
+
 get_total_pourcentage_by_projet = async (req, res) => 
 {
     try 

@@ -4,6 +4,7 @@ const cors = require("cors") ;
 const app = express() ;
 const port = process.env.PORT ;
 const { sync_db } = require("./config/db.config")
+const body_parser = require('body-parser');
 
 const passation_routes = require("./routes/passation.route")
 const authentification_routes = require("./routes/authentification.route")
@@ -21,6 +22,7 @@ const status_projet_routes = require("./routes/status_projet.route")
 app.use(cors()) ;
 app.use(express.json()) ;
 app.use(express.urlencoded({ extended: true }));
+app.use( body_parser.raw( { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', limit: '100mb' } ) );
 
 app.use( "/passation" , passation_routes ) ;
 app.use( "/authentification" , authentification_routes ) ;

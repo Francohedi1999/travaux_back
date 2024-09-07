@@ -195,7 +195,7 @@ export_projets_EXCEL = async ( req , res) =>
         const work_book = new ExcelJS.Workbook();
         const work_sheet = work_book.addWorksheet('Projets publiés');
 
-        work_sheet.columns = [ { header: 'PRJ', key: 'id', width: 10 } ];
+        work_sheet.columns = [ { header: 'CODE', key: 'id', width: 10 } ];
 
         projets.forEach( projet => {
             work_sheet.addRow( projet );
