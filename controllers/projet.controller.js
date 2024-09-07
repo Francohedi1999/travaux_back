@@ -4,6 +4,7 @@ const { projet_model ,
         mode_projet_model } = require("../migrations") ;
 const { Op } = require("sequelize") ;
 const Sequelize = require("sequelize");
+const ExcelJS = require('exceljs');
 
 get_all_projets_by_maj = async ( req , res ) =>
 {
@@ -181,12 +182,47 @@ get_total_projects_by_status_projet = async (req, res) =>
     }
 }
 
+export_projets_EXCEL = async ( req , res) =>
+{
+    try 
+    {
+        const projets = await projet_model.findAll({ 
+            where : { 
+                status_: true , 
+                id_status_projet: { [Op.ne]: 3 }
+        }});
 
+        const work_book = new ExcelJS.Workbook();
+        const work_sheet = work_book.addWorksheet('Projets publiés');
+
+        work_sheet.columns = [ { header: 'PRJ', key: 'id', width: 10 } ];
+
+        projets.forEach( projet => {
+            work_sheet.addRow( projet );
+        });
+
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename=Projets publiés.xlsx');
+
+        await work_book.xlsx.write(res);
+        res.end();
+    } 
+    catch (error) 
+    {
+        console.log("=====================================================================");
+        console.log("Erreur export_projets_EXCEL()");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json(error);
+    }
+}
 
 module.exports = {
     // create ,
     get_all_projets_by_maj ,
     get_projet_by_id ,
-    get_total_projects_by_status_projet
+    get_total_projects_by_status_projet ,
+    export_projets_EXCEL
     // get_projets_by_passation 
 }
