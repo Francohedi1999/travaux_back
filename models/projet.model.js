@@ -29,6 +29,10 @@ const projet_model = sequelize_DB.define("projet",
         { type: Sequelize.DATE } ,
     status_ :
         { type: Sequelize.BOOLEAN , defaultValue: false } ,
+    ville_1 : 
+        { type: Sequelize.TEXT } ,
+    ville_2 : 
+        { type: Sequelize.TEXT } ,
     latitude_1 : 
         { type: Sequelize.DECIMAL } ,
     latitude_2 : 
