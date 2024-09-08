@@ -7,8 +7,10 @@ const presentation_projet_model = sequelize_DB.define("presentation_projet",
         { type: Sequelize.INTEGER , primaryKey: true , autoIncrement: true } ,
     description: 
         { type: Sequelize.TEXT } ,
-    image_path: 
-        { type: Sequelize.TEXT } ,
+    image: 
+        { type: Sequelize.TEXT } ,        
+    before :
+        { type: Sequelize.BOOLEAN , defaultValue: false }
 });
 
 module.exports = presentation_projet_model ;

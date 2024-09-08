@@ -7,7 +7,7 @@ const commentaire_projet_model = sequelize_DB.define("commentaire_projet",
         { type: Sequelize.INTEGER , primaryKey: true , autoIncrement: true } ,
     contenu: 
         { type: Sequelize.TEXT } ,
-    image_path: 
+    image: 
         { type: Sequelize.TEXT } ,
 });
 

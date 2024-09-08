@@ -28,7 +28,15 @@ const projet_model = sequelize_DB.define("projet",
     date_prev_att : 
         { type: Sequelize.DATE } ,
     status_ :
-        { type: Sequelize.BOOLEAN , defaultValue: false },
+        { type: Sequelize.BOOLEAN , defaultValue: false } ,
+    latitude_1 : 
+        { type: Sequelize.DECIMAL } ,
+    latitude_2 : 
+        { type: Sequelize.DECIMAL } ,
+    longitude_1 : 
+        { type: Sequelize.DECIMAL } ,
+    longitude_2 : 
+        { type: Sequelize.DECIMAL } 
 });
 
 module.exports = projet_model ;
