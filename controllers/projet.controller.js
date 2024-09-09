@@ -86,6 +86,81 @@ get_all_projets_by_maj = async ( req , res ) =>
     }
 }
 
+get_all_projets_by_status = async ( req , res ) =>
+{
+    try
+    {
+        const id_status_projet = req.params.id_status_projet ;
+
+        const id = req.query.id; 
+        const objet = req.query.objet; 
+        const id_nature = req.query.id_nature ; 
+        const id_mode = req.query.id_mode ; 
+
+        const page = req.query.page || 1 ;
+        const limit= req.query.limit || 10;
+
+        const page_number = parseInt( page );
+        const limit_number = parseInt( limit );
+        const offset = ( page_number - 1 ) * limit_number;
+
+        const where_condition = {} ;
+        where_condition.id_status_projet = id_status_projet ;
+        if (id) 
+        {
+            where_condition.id = id ; 
+        }
+        if (objet) 
+        {
+            where_condition.objet = { [Op.like]: `%${objet}%` }; 
+        }
+        if (id_nature) 
+        {
+            where_condition.id_nature = id_nature ; 
+        }
+        if (id_mode) 
+        {
+            where_condition.id_mode = id_mode ; 
+        }
+
+        const projets = await projet_model.findAndCountAll( { 
+            where: where_condition  ,
+            include: [ 
+                {
+                    model: status_projet_model,
+                    as: 'status_projet'
+                },
+                {
+                    model: nature_projet_model,
+                    as: 'nature_projet'
+                },
+                {
+                    model: mode_projet_model,
+                    as: 'mode_projet'
+                }
+            ]  ,
+            limit: limit_number ,
+            offset: offset
+        } ) ;
+
+        return res.status(200).json({
+            total_items: projets.count ,
+            data: projets.rows ,
+            current_page: page_number ,
+            total_pages: Math.ceil( projets.count / limit_number )
+        });
+    } 
+    catch( error )
+    {
+        console.log("=====================================================================");
+        console.log("Erreur get_all_projets_by_status()");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json( error ) ; 
+    }
+}
+
 get_projet_by_id = async ( req , res ) =>
 {
     try
@@ -120,6 +195,8 @@ get_projet_by_id = async ( req , res ) =>
         return res.status(400).json( error ) ; 
     }
 }
+
+
 
 // get_projets_by_passation = async ( req , res ) =>
 // {
@@ -223,6 +300,7 @@ module.exports = {
     get_all_projets_by_maj ,
     get_projet_by_id ,
     get_total_projects_by_status_projet ,
-    export_projets_EXCEL
+    export_projets_EXCEL ,
+    get_all_projets_by_status
     // get_projets_by_passation 
 }
