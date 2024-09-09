@@ -9,6 +9,8 @@ const presentation_projet_model = sequelize_DB.define("presentation_projet",
         { type: Sequelize.TEXT } ,
     image: 
         { type: Sequelize.TEXT } ,        
+    status_ :
+        { type: Sequelize.BOOLEAN , defaultValue: false } ,        
     before :
         { type: Sequelize.BOOLEAN , defaultValue: false }
 });

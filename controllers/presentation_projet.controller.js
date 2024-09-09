@@ -1,26 +1,26 @@
-const { commentaire_projet_model , user_model } = require("../migrations") ;
+const { presentation_projet_model , user_model } = require("../migrations") ;
 
 create = async ( req , res ) =>
 {
     try
     {    
         const id_projet = req.body.id_projet ;
-        const contenu = req.body.contenu ;
+        const description = req.body.description ;
         const image = req.body.image || null;
-        const id_user = req.body.id_user ;
+        const before = req.body.before || true;
         
-        const commentaire_projet = await commentaire_projet_model.create( { 
-            contenu : contenu , 
+        const presentation_projet = await presentation_projet_model.create( { 
+            description : description , 
             image : image , 
+            before : before ,
             status_ : true ,
-            id_user: id_user ,
             id_projet : id_projet } ) ;
-        return res.status(200).json( { message: "Le commentaire a été bien ajouté" , commentaire_projet , created : true } ) ;
+        return res.status(200).json( { message: "La présentation a été bien ajoutée" , presentation_projet , created : true } ) ;
     } 
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur create() comment");
+        console.log("Erreur create() presentation");
         console.log(error);
         console.log("=====================================================================");
 
@@ -28,43 +28,43 @@ create = async ( req , res ) =>
     }
 }
 
-update_comment = async ( req , res ) =>
+update_presentation = async ( req , res ) =>
 {
     try
     {        
-        const comment_id = req.params.comment_id ;
+        const presentation_id = req.params.presentation_id ;
         
-        const comment = await commentaire_projet_model.findOne( { where : { id: comment_id } } ) ;
-        if( !comment )
+        const presentation = await presentation_projet_model.findOne( { where : { id: presentation_id } } ) ;
+        if( !presentation )
         {
             return res.status(200).json( {message : "Non trouvée" , updated: false } ) ;
         }        
         
-        const status_ = req.body.status_ ?? comment.status_ ;
+        const status_ = req.body.status_ ?? presentation.status_ ;
 
-        await commentaire_projet_model.update(
+        await presentation_projet_model.update(
             { 
                 status_: status_ 
             } ,
-            { where: { id: comment_id } }
+            { where: { id: presentation_id } }
         );
         
         let message = null ;
         if( status_ )
         {
-            message = "Le commentaire a été bien restauré" ;
+            message = "La présentation a été bien restaurée" ;
         }
         else
         {
-            message = "Le commentaire a été bien supprimé" ;
+            message = "La présentation a été bien supprimée" ;
         }
 
-        return res.status(200).json( { message : message || "Le commentaire a été bien mis à jour" , updated: true } ) ;
+        return res.status(200).json( { message : message || "La présentation a été bien mise à jour" , updated: true } ) ;
     }
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur update_comment()");
+        console.log("Erreur update_presentation()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -72,27 +72,27 @@ update_comment = async ( req , res ) =>
     }
 }
 
-get_all_comment = async ( req , res ) =>
+get_all_prsentation = async ( req , res ) =>
 {
     try
     {  
         const id_projet = req.params.id_projet ;
+        const before = req.query.before ;
         const status_ = req.query.status_ ;
 
         const where_condition = {} ;
         where_condition.id_projet = id_projet ;
+        if (before !== "undefined") 
+        {
+            where_condition.before = before === 'true'; 
+        }
         if (status_ !== "undefined") 
         {
             where_condition.status_ = status_ === 'true'; 
         }
 
-        const comments = await commentaire_projet_model.findAll({ 
+        const comments = await presentation_projet_model.findAll({ 
             where: where_condition ,
-            include: [ 
-                {
-                    model: user_model,
-                    as: 'user'
-                }] ,
             order: [ ['id', 'desc'] ],
         }) ;
                 
@@ -101,7 +101,7 @@ get_all_comment = async ( req , res ) =>
     catch( error )
     {
         console.log("=====================================================================");
-        console.log("Erreur get_all_comment()");
+        console.log("Erreur get_all_prsentation()");
         console.log(error);
         console.log("=====================================================================");
 
@@ -110,5 +110,5 @@ get_all_comment = async ( req , res ) =>
 }
 
 module.exports = {  create ,
-                    get_all_comment ,
-                    update_comment }
+                    get_all_prsentation ,
+                    update_presentation }

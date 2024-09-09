@@ -17,13 +17,16 @@ const maj_passation_routes = require("./routes/maj_passation.route")
 const avancement_projet_routes = require("./routes/avancement_projet.route")
 const status_projet_routes = require("./routes/status_projet.route") 
 const commentaire_routes = require("./routes/commentaire_projet.route") 
+const presentation_routes = require("./routes/presentation_projet.route") 
 
 
 
 app.use(cors()) ;
+
 app.use( body_parser.json({ limit: "50mb" })) ;
 app.use( body_parser.urlencoded({limit: "50mb", extended: true}));
 app.use( body_parser.raw( { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', limit: '50mb' } ) );
+
 app.use( "/passation" , passation_routes ) ;
 app.use( "/authentification" , authentification_routes ) ;
 app.use( "/user" , user_routes ) ;
@@ -35,6 +38,7 @@ app.use( "/maj_passation" , maj_passation_routes ) ;
 app.use( "/avancement_projet" , avancement_projet_routes ) ;
 app.use( "/status_projet" , status_projet_routes ) ;
 app.use( "/commentaire" , commentaire_routes ) ;
+app.use( "/presentation" , presentation_routes ) ;
 
 
 app.listen(port, () => 
