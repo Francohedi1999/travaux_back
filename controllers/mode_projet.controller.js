@@ -105,7 +105,7 @@ update_mode = async ( req , res ) =>
 
         if (mode.designation !== designation) 
         {
-            const mode_ = await mode_projet_model.findOne( { where: { designation } } );
+            const mode_ = await mode_projet_model.findOne( { where: { designation:designation } } );
             if ( mode_ ) 
             {
                 return res.status(200).json({ message: "Ce mode de passation existe déjà" , updated: false });

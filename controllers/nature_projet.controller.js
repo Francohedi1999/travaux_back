@@ -106,7 +106,7 @@ update_nature = async ( req , res ) =>
 
         if (nature.designation !== designation) 
         {
-            const nature_ = await nature_projet_model.findOne( { where: { designation } } );
+            const nature_ = await nature_projet_model.findOne( { where: { designation:designation } } );
             if ( nature_ ) 
             {
                 return res.status(200).json({ message: "Ce nature de passation existe déjà" , updated: false });

@@ -45,6 +45,7 @@ get_all_majs_passation = async ( req , res ) =>
         const page = req.query.page || 1 ;
         const limit= req.query.limit || 10;
         const status= req.query.status;
+        const numero_maj= req.query.numero_maj;
 
         const page_number = parseInt( page );
         const limit_number = parseInt( limit );
@@ -73,6 +74,10 @@ get_all_majs_passation = async ( req , res ) =>
         if (status !== "undefined") 
         {
             where_condition.status_ = status === 'true'; 
+        }
+        if (numero_maj) 
+        {
+            where_condition.numero_maj = numero_maj ; 
         }
 
         const majs = await maj_passation_model.findAndCountAll({
