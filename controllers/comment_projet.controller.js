@@ -33,21 +33,23 @@ update_comment = async ( req , res ) =>
     try
     {        
         const comment_id = req.params.comment_id ;
+        
         const comment = await commentaire_projet_model.findOne( { where : { id: comment_id } } ) ;
         if( !comment )
         {
             return res.status(200).json( {message : "Non trouvée" , updated: false } ) ;
         }        
         
-        const contenu = req.body.contenu || comment.contenu;
-        const image = req.body.image || comment.image;
-        const status_ = req.body.status_ || comment.status_ ;
+        const contenu = req.body.contenu ?? comment.contenu ;
+        const image = req.body.image ?? comment.image ;
+        const status_ = req.body.status_ ?? comment.status_ ;
 
         await commentaire_projet_model.update(
             { 
                 status_: status_ , 
                 contenu: contenu , 
-                image: image } ,
+                image: image 
+            } ,
             { where: { id: comment_id } }
         );
         
@@ -84,7 +86,8 @@ get_all_comment = async ( req , res ) =>
                 {
                     model: user_model,
                     as: 'user'
-                }]
+                }] ,
+            order: [ ['id', 'desc'] ],
         }) ;
                 
         return res.status(200).json( comments ) ;
