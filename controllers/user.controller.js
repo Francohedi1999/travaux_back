@@ -20,7 +20,7 @@ create = async ( req , res ) =>
             password : password_ ,
             sexe : req.body.sexe ,
             date_naissance : req.body.date_naissance ,
-            id_role : req.body.id_role ,
+            id_role : req.body.id_role || 2 ,
             deleted : false 
         } ) ;
     

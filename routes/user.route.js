@@ -13,6 +13,7 @@ const   {
 const { check_token } = require("../controllers/authentification.controller") ;
 
 router.post( "/create" , [ check_token , create ] ) ;
+router.post( "/register" , [ create ] ) ;
 router.get( "/user_logged" , [ check_token , get_user_logged ] ) ;
 router.get( "/users" , [ check_token , get_all_users ] ) ;
 router.get( "/user/:id" , [ check_token , get_user_by_id ] ) ;

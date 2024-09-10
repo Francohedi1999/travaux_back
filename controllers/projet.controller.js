@@ -90,8 +90,7 @@ get_all_projets_by_status = async ( req , res ) =>
 {
     try
     {
-        const id_status_projet = req.params.id_status_projet ;
-
+        const id_status_projet = req.query.id_status_projet ;
         const id = req.query.id; 
         const objet = req.query.objet; 
         const id_nature = req.query.id_nature ; 
@@ -105,7 +104,10 @@ get_all_projets_by_status = async ( req , res ) =>
         const offset = ( page_number - 1 ) * limit_number;
 
         const where_condition = {} ;
-        where_condition.id_status_projet = id_status_projet ;
+        if( id_status_projet )
+        {
+            where_condition.id_status_projet = id_status_projet ;
+        }
         if (id) 
         {
             where_condition.id = id ; 
