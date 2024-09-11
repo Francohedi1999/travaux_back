@@ -150,8 +150,17 @@ get_maj_by_passation = async ( req , res ) =>
     try
     {
         const id_passation = req.params.id_passation ;
-        const numero_maj = req.params.numero_maj ;
-        const maj = await maj_passation_model.findOne({ where: { id_passation : id_passation , status_: true } } ) ;
+        const maj = await maj_passation_model.findOne({ 
+            where: { id_passation : id_passation , status_: true } , 
+            include: [ { model: passation_model , as: 'passation' } ]
+        }) ;
+        console.log("=====================================================================");
+        console.log("=====================================================================");
+        console.log("=====================================================================");
+        console.log(maj);
+        console.log("=====================================================================");
+        console.log("=====================================================================");
+        console.log("=====================================================================");
         return res.status(200).json( maj ) ;
     } 
     catch( error )

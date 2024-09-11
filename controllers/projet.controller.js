@@ -12,8 +12,8 @@ get_all_projets_by_maj = async ( req , res ) =>
     {
         const id_maj = req.params.id_maj ;
 
-        const id = req.query.id; 
-        const objet = req.query.objet; 
+        const id = req.query.id ; 
+        const objet = req.query.objet ; 
         const id_nature = req.query.id_nature ; 
         const id_mode = req.query.id_mode ; 
         const id_status_projet = req.query.id_status_projet ; 
