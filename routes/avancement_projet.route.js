@@ -12,6 +12,6 @@ const upload = multer({ storage: storage });
 
 router.post( "/" , [ check_token , add_avancement ] ) ;
 router.post("/import", [check_token, upload.single('file'), import_EXCEL_avancement]);
-router.get( "/total/:id_projet" , [ check_token , get_total_pourcentage_by_projet ] ) ;
+router.get( "/total/:id_projet" , [ get_total_pourcentage_by_projet ] ) ;
 
 module.exports = router

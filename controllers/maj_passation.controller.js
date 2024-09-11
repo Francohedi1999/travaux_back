@@ -145,6 +145,26 @@ get_maj_by_passation_and_num_maj = async ( req , res ) =>
     }
 }
 
+get_maj_by_passation = async ( req , res ) =>
+{
+    try
+    {
+        const id_passation = req.params.id_passation ;
+        const numero_maj = req.params.numero_maj ;
+        const maj = await maj_passation_model.findOne({ where: { id_passation : id_passation , status_: true } } ) ;
+        return res.status(200).json( maj ) ;
+    } 
+    catch( error )
+    {
+        console.log("=====================================================================");
+        console.log("Erreur get_maj_by_passation_and_num_maj()");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json( error ) ; 
+    }
+}
+
 update_maj = async ( req , res ) =>
 {
     try
@@ -203,4 +223,5 @@ module.exports = {  create ,
                     get_all_majs_passation , 
                     update_maj ,
                     get_maj_by_passation_and_num_maj ,
+                    get_maj_by_passation ,
                     get_maj_by_id }

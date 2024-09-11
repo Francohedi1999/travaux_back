@@ -71,8 +71,9 @@ get_all_passation = async ( req , res ) =>
 
         const passations = await passation_model.findAndCountAll({
             where: where_condition ,
+            order: [ ['annee', 'DESC'] ] ,
             limit: limit_number ,
-            offset: offset
+            offset: offset 
         });
 
         return res.status(200).json({

@@ -7,7 +7,7 @@ const { create ,
 const { check_token } = require("../controllers/authentification.controller") ;
 
 router.post( "/" , [ check_token , create ] ) ;
-router.get( "/" , [ check_token , get_all_passation] ) ;
-router.get( "/:id" , [ check_token , get_passation_by_id] ) ;
+router.get( "/" , [ get_all_passation] ) ;
+router.get( "/:id" , [ get_passation_by_id] ) ;
 
 module.exports = router 
