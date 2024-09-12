@@ -106,6 +106,26 @@ import_EXCEL_avancement = async (req, res) => {
                 message: "Le fichier doit contenir les colonnes 'CODE' et 'AVANCEMENT'" , success: false });
         }
 
+        const invalid_rows = [];
+
+        work_sheet.eachRow({ includeEmpty: false }, (row, row_number) => {
+            if (row_number > 1) {
+                const avancementCell = row.getCell(column_indices.pourcentage);
+                const avancementValue = avancementCell ? parseFloat(avancementCell.value) : NaN;
+
+                if (isNaN(avancementValue)) {
+                    invalid_rows.push(row_number);
+                }
+            }
+        });
+
+        if (invalid_rows.length > 0) {
+            return res.status(200).json({
+                message: "Les lignes qui contiennent des valeurs non valides dans la colonne AVANCEMENT" ,
+                success: false
+            });
+        }
+
         const promises = [];
 
         work_sheet.eachRow({ includeEmpty: false }, (row, row_number) => {
