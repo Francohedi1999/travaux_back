@@ -4,27 +4,22 @@ const Sequelize = require("sequelize") ;
 const bcrypt = require("bcrypt");
 
 const sequelize_DB = new Sequelize(
-    process.env.DB_DATABASE,
-    process.env.DB_USERNAME,
-    process.env.DB_PASSWORD,
+    process.env.DB_DATABASE , 
+    process.env.DB_USERNAME , 
+    process.env.DB_PASSWORD ,
     {
-        host: process.env.DB_HOST,
-        dialect: 'postgres',
-        port: process.env.DB_PORT || 5432,
-        dialectOptions: {
-            ssl: {
-                require: true,
-                rejectUnauthorized: false
-            }
-        },
-        pool: {
-            max: 5,
-            min: 0,
-            acquire: 30000,
+        host: process.env.DB_HOST ,
+        dialect: "postgres" ,
+        operatorsAliases: 0 ,
+        pool: 
+        {
+            max: 5 ,
+            min: 0 ,
+            acquire: 30000 ,
             idle: 10000
         }
     }
-);
+) ;
 
 const sync_db = async () => {
     try {
