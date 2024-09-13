@@ -11,6 +11,12 @@ const sequelize_DB = new Sequelize(
         host: process.env.DB_HOST ,
         dialect: "postgres" ,
         operatorsAliases: 0 ,
+        dialectOptions: {
+            ssl: {
+                require: true, // force l'utilisation de SSL
+                rejectUnauthorized: false // permet de ne pas vérifier le certificat (utile pour certaines configurations)
+            }
+        },
         pool: 
         {
             max: 5 ,
