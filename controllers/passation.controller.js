@@ -94,6 +94,25 @@ get_all_passation = async ( req , res ) =>
     }
 }
 
+get_passations = async ( req , res ) =>
+{
+    try
+    {  
+        const passations = await passation_model.findAll() ;
+                
+        return res.status(200).json( passations ) ;
+    } 
+    catch( error )
+    {
+        console.log("=====================================================================");
+        console.log("Erreur get_passations");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json( error ) ; 
+    }
+}
+
 get_passation_by_id = async ( req , res ) =>
 {
     try
@@ -127,5 +146,6 @@ get_passation_by_id = async ( req , res ) =>
 module.exports = { 
     create , 
     get_all_passation , 
+    get_passations ,
     get_passation_by_id 
 }
