@@ -98,8 +98,7 @@ get_passations = async ( req , res ) =>
 {
     try
     {  
-        const passations = await passation_model.findAll() ;
-                
+        const passations = await passation_model.findAll({ order: [['id', 'DESC']] }) ;                
         return res.status(200).json( passations ) ;
     } 
     catch( error )
