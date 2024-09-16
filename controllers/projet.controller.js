@@ -216,7 +216,7 @@ get_projets = async ( req , res ) =>
         }
         
 
-        return res.status(200).json({ projets });
+        return res.status(200).json( projets );
     } 
     catch( error )
     {
