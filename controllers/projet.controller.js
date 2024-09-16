@@ -305,7 +305,8 @@ get_total_projects_by_status_projet = async (req, res) =>
                     attributes: ['id', 'designation']  // Include 'id' in the attributes
                 }
             ],
-            group: ['projet.id_status_projet', 'status_projet.designation', 'status_projet.id']  // Add 'status_projet.id' to the GROUP BY clause
+            group: ['projet.id_status_projet', 'status_projet.designation', 'status_projet.id'] , // Add 'status_projet.id' to the GROUP BY clause
+            order: [['id_status_projet', 'ASC']] 
         });
 
         if (!total_projects_by_status || total_projects_by_status.length === 0) 
