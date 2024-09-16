@@ -1,6 +1,7 @@
 const { projet_model , 
         status_projet_model , 
         nature_projet_model , 
+        maj_passation_model ,
         mode_projet_model } = require("../migrations") ;
 const { Op } = require("sequelize") ;
 const Sequelize = require("sequelize");
@@ -163,6 +164,71 @@ get_all_projets_by_status = async ( req , res ) =>
     }
 }
 
+get_projets = async ( req , res ) =>
+{
+    try
+    {
+        const id_status_projet = req.query.id_status_projet ;
+        const id_passation = req.query.id_passation ;
+
+        let projets = null ;
+
+        if( id_status_projet )
+        {
+            projets = await projet_model.findAll( { 
+                where: { id_status_projet: id_status_projet } ,
+                include: [ 
+                    {
+                        model: status_projet_model,
+                        as: 'status_projet'
+                    },
+                    {
+                        model: nature_projet_model,
+                        as: 'nature_projet'
+                    },
+                    {
+                        model: mode_projet_model,
+                        as: 'mode_projet'
+                    }
+                ] 
+            } ) ;
+        }
+        if ( id_passation ) 
+        {
+            const maj = await maj_passation_model.findOne({ where: { id_passation : id_passation , status_: true } }) ;
+            projets = await projet_model.findAll( { 
+                where: { id_maj: maj.id } ,
+                include: [ 
+                    {
+                        model: status_projet_model,
+                        as: 'status_projet'
+                    },
+                    {
+                        model: nature_projet_model,
+                        as: 'nature_projet'
+                    },
+                    {
+                        model: mode_projet_model,
+                        as: 'mode_projet'
+                    }
+                ] 
+            } ) ;
+        }
+        
+
+        return res.status(200).json({ projets });
+    } 
+    catch( error )
+    {
+        console.log("=====================================================================");
+        console.log("Erreur get_all_projets_by_status()");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json( error ) ; 
+    }
+}
+
 get_projet_by_id = async ( req , res ) =>
 {
     try
@@ -303,6 +369,7 @@ module.exports = {
     get_projet_by_id ,
     get_total_projects_by_status_projet ,
     export_projets_EXCEL ,
+    get_projets ,
     get_all_projets_by_status
     // get_projets_by_passation 
 }
