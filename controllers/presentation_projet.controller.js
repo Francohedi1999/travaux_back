@@ -98,7 +98,7 @@ get_all_prsentation = async ( req , res ) =>
         {
             where_condition.etat = etat ; 
         }
-        
+
         if (status_ !== "undefined") 
         {
             where_condition.status_ = status_ === 'true'; 
@@ -106,7 +106,7 @@ get_all_prsentation = async ( req , res ) =>
 
         const comments = await presentation_projet_model.findAll({ 
             where: where_condition ,
-            order: [ ['id', 'desc'] ],
+            order: [ ['etat', 'asc'], ['id', 'desc'] ],
         }) ;
                 
         return res.status(200).json( comments ) ;
