@@ -18,7 +18,7 @@ create = async ( req , res ) =>
             prenom : req.body.prenom ,
             email : req.body.email ,
             password : password_ ,
-            sexe : req.body.sexe ,
+            sexe : req.body.sexe || "" ,
             date_naissance : req.body.date_naissance ,
             id_role : req.body.id_role || 2 ,
             deleted : false 
