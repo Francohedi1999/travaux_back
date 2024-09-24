@@ -198,11 +198,16 @@ import_EXCEL_avancement = async (req, res) => {
 
                     const total_final = parseFloat(nouveau_total_actuel.get('total_pourcentage')) || 0;
 
-                    if (total_final === 0) {
+                    if (total_final === 0) 
+                    {
                         await projet_model.update({ id_status_projet: 1 }, { where: { id: id_projet } });
-                    } else if (total_final > 0 && total_final < 100) {
+                    } 
+                    else if (total_final > 0 && total_final < 100) 
+                    {
                         await projet_model.update({ id_status_projet: 2 }, { where: { id: id_projet } });
-                    } else if (total_final === 100) {
+                    } 
+                    else if (total_final === 100) 
+                    {
                         await projet_model.update({ id_status_projet: 3 }, { where: { id: id_projet } });
                     }
                 };
