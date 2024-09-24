@@ -7,7 +7,12 @@ add_avancement = async ( req , res ) =>
 {
     try
     {    
-        const description = req.body.description || "Sans description" ;
+        let description = "" ;
+        if( req.body.description )
+        {
+            description = req.body.description + " (Manuellement)" ;
+        }
+        description =  "Sans description (Manuellement)" ;
         const pourcentage = parseFloat( req.body.pourcentage )  ;
         const date_enreg = req.body.date_enreg || new Date();
         const id_projet = req.body.id_projet ;
