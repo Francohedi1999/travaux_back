@@ -6,17 +6,6 @@ create = async ( req , res ) =>
     {    
         const id_projet = req.body.id_projet ;
         const description = req.body.description ;
-
-        console.log("=====================================================================");
-        console.log("=====================================================================");
-        console.log(description);
-        console.log("=====================================================================");
-        console.log("=====================================================================");
-        console.log(req.body.description);
-        console.log("=====================================================================");
-        console.log("=====================================================================");
-
-
         const image = req.body.image || null;
         const etat = req.body.etat;
         
