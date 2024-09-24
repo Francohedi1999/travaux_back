@@ -217,6 +217,30 @@ import_EXCEL_avancement = async (req, res) => {
 }
 
 
+get_all_avancement_by_projet = async ( req , res ) =>
+{
+    try 
+    {
+        const id_projet = req.params.id_projet;
+
+        const avancements = await avancement_projet_model.findAll({ 
+            where: { id_projet : id_projet } ,
+            order: [ ['id', 'desc'] ],
+        }) ;
+
+        return res.status(200).json( avancements );
+
+    } 
+    catch (error) 
+    {
+        console.log("=====================================================================");
+        console.log("Erreur get_all_avancement_by_projet()");
+        console.log(error);
+        console.log("=====================================================================");
+
+        return res.status(400).json(error);
+    }
+} ;
 
 
 get_total_pourcentage_by_projet = async (req, res) => 
@@ -256,4 +280,5 @@ get_total_pourcentage_by_projet = async (req, res) =>
 module.exports = { 
     add_avancement , 
     get_total_pourcentage_by_projet , 
+    get_all_avancement_by_projet ,
     import_EXCEL_avancement } ;
