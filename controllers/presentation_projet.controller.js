@@ -18,12 +18,12 @@ create = async ( req , res ) =>
 
 
         const image = req.body.image || null;
-        const before = req.body.before || true;
+        const etat = req.body.etat;
         
         const presentation_projet = await presentation_projet_model.create( { 
             description : description , 
             image : image , 
-            before : before ,
+            etat : etat ,
             status_ : true ,
             id_projet : id_projet } ) ;
         return res.status(200).json( { message: "La présentation a été bien ajoutée" , presentation_projet , created : true } ) ;
@@ -88,15 +88,17 @@ get_all_prsentation = async ( req , res ) =>
     try
     {  
         const id_projet = req.params.id_projet ;
-        const before = req.query.before ;
+        const etat = req.query.etat ;
         const status_ = req.query.status_ ;
 
         const where_condition = {} ;
         where_condition.id_projet = id_projet ;
-        if (before !== "undefined") 
+
+        if (etat) 
         {
-            where_condition.before = before === 'true'; 
+            where_condition.etat = etat ; 
         }
+        
         if (status_ !== "undefined") 
         {
             where_condition.status_ = status_ === 'true'; 
