@@ -144,7 +144,7 @@ import_EXCEL_avancement = async (req, res) => {
                 const avancement = {
                     id_projet: codeCell.value,
                     pourcentage: parseFloat(avancementCell.value),
-                    description: "Sans description",
+                    description: "Sans description (Par importation)",
                     date_enreg: new Date(),
                 };
 
