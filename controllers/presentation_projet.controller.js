@@ -88,7 +88,7 @@ get_all_prsentation = async ( req , res ) =>
             where_condition.etat = etat ; 
         }
 
-        if (status_ !== "undefined") 
+        if ( status_ !== "undefined" ) 
         {
             where_condition.status_ = status_ === 'true'; 
         }
