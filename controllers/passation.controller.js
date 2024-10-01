@@ -47,7 +47,7 @@ update = async ( req , res ) =>
             date_etab_doc_init : req.body.date_etab_doc_init ,
             annee : req.body.annee ,
         } ,
-        { where: { id: nature_id } }
+        { where: { id: id_passation } }
     ) ;
 
     return res.status(200).json( { message : "La passation a été bien mise à jour" , updated: true } ) ;
