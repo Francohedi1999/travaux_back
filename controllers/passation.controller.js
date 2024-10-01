@@ -30,6 +30,29 @@ create = async ( req , res ) =>
     }
 } 
 
+update = async ( req , res ) => 
+{
+    const id_passation = req.params.id_passation ;
+    const passation = await passation_model.findOne( { where : { id: id_passation } } ) ;
+    if( !passation )
+    {
+        return res.status(200).json( {message : "Non trouvée" , updated: false } ) ;
+    }  
+
+    await passation_model.update(
+        { 
+            aut_cont : req.body.aut_cont ,
+            nom_prmp : req.body.nom_prmp ,
+            adresse : req.body.adresse ,
+            date_etab_doc_init : req.body.date_etab_doc_init ,
+            annee : req.body.annee ,
+        } ,
+        { where: { id: nature_id } }
+    ) ;
+
+    return res.status(200).json( { message : "La passation a été bien mise à jour" , updated: true } ) ;
+}
+
 get_all_passation = async ( req , res ) =>
 {
     try
@@ -145,6 +168,7 @@ get_passation_by_id = async ( req , res ) =>
 module.exports = { 
     create , 
     get_all_passation , 
+    update ,
     get_passations ,
     get_passation_by_id 
 }
