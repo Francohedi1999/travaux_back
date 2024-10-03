@@ -96,6 +96,7 @@ get_all_projets_by_status = async ( req , res ) =>
         const objet = req.query.objet; 
         const id_nature = req.query.id_nature ; 
         const id_mode = req.query.id_mode ; 
+        const status_ = req.query.status_ ; 
 
         const page = req.query.page || 1 ;
         const limit= req.query.limit || 10;
@@ -124,6 +125,10 @@ get_all_projets_by_status = async ( req , res ) =>
         if (id_mode) 
         {
             where_condition.id_mode = id_mode ; 
+        }
+        if (status_ !== "undefined") 
+        {
+            where_condition.status_ = status_ === 'true'; 
         }
 
         const projets = await projet_model.findAndCountAll( { 
