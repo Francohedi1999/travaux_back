@@ -77,21 +77,16 @@ const sync_db = async () => {
         console.log('Création mode de passation');
         console.log('');
 
-        await mode_projet_model.findOrCreate({  where: { id: 1 } , 
-                                                defaults: { designation: "Appel d'offre ouvert internationnal" , deleted: false } });
-        await mode_projet_model.findOrCreate({  where: { id: 2 } , 
-                                                    defaults: { designation: "Appel à manifestation d'intérêt" , deleted: false } });
-        await mode_projet_model.findOrCreate({  where: { id: 3 } , 
-                                                    defaults: { designation: "Consultation de prix ouverte" , deleted: false } });
+        await mode_projet_model.findOrCreate({  where: { id: 1 } , defaults: { designation: "Appel d'offre ouvert internationnal" , deleted: false } });
+        await mode_projet_model.findOrCreate({  where: { id: 2 } , defaults: { designation: "Appel à manifestation d'intérêt" , deleted: false } });
+        await mode_projet_model.findOrCreate({  where: { id: 3 } , defaults: { designation: "Consultation de prix ouverte" , deleted: false } });
 
         console.log('==================================================================================================');
         console.log('Création nature de passation');
         console.log('');
 
-        await nature_projet_model.findOrCreate({  where: { id: 1 } , 
-                                                    defaults: { designation: "Travaux" , deleted: false } });
-        await nature_projet_model.findOrCreate({  where: { id: 2 } , 
-                                                    defaults: { designation: "Prestation intellectuelle" , deleted: false } });
+        await nature_projet_model.findOrCreate({  where: { id: 1 } , defaults: { designation: "Travaux" , deleted: false } });
+        await nature_projet_model.findOrCreate({  where: { id: 2 } , defaults: { designation: "Prestation intellectuelle" , deleted: false } });
     } 
     catch (error) 
     {
