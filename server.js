@@ -41,7 +41,7 @@ app.use( "/commentaire" , commentaire_routes ) ;
 app.use( "/presentation" , presentation_routes ) ;
 
 
-app.listen(port, () => 
+app.listen(port, '0.0.0.0' , () => 
 {
     sync_db();
     console.log("===========================================================================================" );
