@@ -1,6 +1,8 @@
 const { passation_model } = require("../migrations") ;
-const { Op } = require("sequelize") ;
-const moment = require("moment") ;
+const { Op } = require('sequelize');
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+dayjs.extend(utc);
 
 create = async ( req , res ) => 
 {
@@ -53,69 +55,71 @@ update = async ( req , res ) =>
     return res.status(200).json( { message : "La passation a été bien mise à jour" , updated: true } ) ;
 }
 
-get_all_passation = async ( req , res ) =>
+get_all_passation = async (req, res) => 
 {
-    try
+    try 
     {
-        const aut_cont = req.query.aut_cont || "" ;
-        const nom_prmp = req.query.nom_prmp || "" ;
-        const adresse = req.query.adresse || "" ;
-        const date_etab_doc_init = req.query.date_etab_doc_init || "" ;
-        const annee = req.query.annee || "" ;
+        const aut_cont = req.query.aut_cont || "";
+        const nom_prmp = req.query.nom_prmp || "";
+        const adresse = req.query.adresse || "";
+        const date_etab_doc_init = req.query.date_etab_doc_init || "";
+        const annee = req.query.annee || "";
 
-        const page = req.query.page || 1 ;
-        const limit= req.query.limit || 10;
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 10;
 
-        const page_number = parseInt( page );
-        const limit_number = parseInt( limit );
-        const offset = ( page_number - 1 ) * limit_number;
+        const page_number = parseInt(page);
+        const limit_number = parseInt(limit);
+        const offset = (page_number - 1) * limit_number;
 
-        const where_condition = {} ;
+        const where_condition = {};
+        
         if (aut_cont) 
         {
-            where_condition.aut_cont = { [Op.like]: `%${aut_cont}%` } ; 
+            where_condition.aut_cont = { [Op.like]: `%${aut_cont}%` };
         }
         if (nom_prmp) 
         {
-            where_condition.nom_prmp = { [Op.like]: `%${nom_prmp}%` } ; 
+            where_condition.nom_prmp = { [Op.like]: `%${nom_prmp}%` };
         }
         if (adresse) 
         {
-            where_condition.adresse = { [Op.like]: `%${adresse}%` } ; 
+            where_condition.adresse = { [Op.like]: `%${adresse}%` };
         }
         if (date_etab_doc_init) 
         {
-            where_condition.date_etab_doc_init =  date_etab_doc_init ;
+            const dateStart = dayjs.utc(date_etab_doc_init).startOf('day').toDate();
+            const dateEnd = dayjs.utc(date_etab_doc_init).endOf('day').toDate();
+            where_condition.date_etab_doc_init = { [Op.between]: [dateStart, dateEnd] };
         }
         if (annee) 
         {
-            where_condition.annee =  annee ;
+            where_condition.annee = annee;
         }
 
         const passations = await passation_model.findAndCountAll({
-            where: where_condition ,
-            order: [ ['annee', 'DESC'] ] ,
-            limit: limit_number ,
-            offset: offset 
+            where: where_condition,
+            order: [['annee', 'DESC']],
+            limit: limit_number,
+            offset: offset
         });
 
         return res.status(200).json({
-            total_items: passations.count ,
-            data: passations.rows ,
-            current_page: page_number ,
-            total_pages: Math.ceil( passations.count / limit_number )
+            total_items: passations.count,
+            data: passations.rows,
+            current_page: page_number,
+            total_pages: Math.ceil(passations.count / limit_number)
         });
-    }
-    catch( error )
-    {
+
+    } catch (error) {
         console.log("=====================================================================");
         console.log("Erreur get_all_passation()");
         console.log(error);
         console.log("=====================================================================");
 
-        return res.status(400).json( error ) ;
+        return res.status(400).json(error);
     }
-}
+};
 
 get_passations = async ( req , res ) =>
 {
