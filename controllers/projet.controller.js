@@ -190,6 +190,7 @@ get_projets = async ( req , res ) =>
         const id_nature = req.query.id_nature ; 
         const id_mode = req.query.id_mode ; 
         const ville = req.query.ville;
+        const id_status = req.query.id_status;
 
         let projets = null ;
 
@@ -245,7 +246,7 @@ get_projets = async ( req , res ) =>
             const maj = await maj_passation_model.findOne({ where: { id_passation : id_passation , status_: true } }) ;
 
             const where_condition = {} ;
-            
+
             where_condition.status_ = true ;
             where_condition.id_maj = maj.id ;
 
@@ -268,6 +269,10 @@ get_projets = async ( req , res ) =>
             if (ville) 
             {
                 where_condition[Op.or] = [ { ville_1: { [Op.like]: `%${ville}%` } }, { ville_2: { [Op.like]: `%${ville}%` } } ];
+            }
+            if ( id_status ) 
+            {
+                where_condition.id_status_projet = id_status ;
             }
 
             projets = await projet_model.findAll( { 
