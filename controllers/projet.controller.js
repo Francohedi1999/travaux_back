@@ -18,6 +18,7 @@ get_all_projets_by_maj = async ( req , res ) =>
         const id_nature = req.query.id_nature ; 
         const id_mode = req.query.id_mode ; 
         const id_status_projet = req.query.id_status_projet ; 
+        const ville = req.query.ville;
 
         const page = req.query.page || 1 ;
         const limit= req.query.limit || 10;
@@ -48,7 +49,10 @@ get_all_projets_by_maj = async ( req , res ) =>
         {
             where_condition.id_status_projet = id_status_projet ; 
         }
-
+        if (ville) 
+        {
+            where_condition[Op.or] = [ { ville_1: { [Op.like]: `%${ville}%` } }, { ville_2: { [Op.like]: `%${ville}%` } } ];
+        }
         const projets = await projet_model.findAndCountAll( { 
             where: where_condition  ,
             include: [ 
@@ -97,6 +101,7 @@ get_all_projets_by_status = async ( req , res ) =>
         const id_nature = req.query.id_nature ; 
         const id_mode = req.query.id_mode ; 
         const status_ = req.query.status_ ; 
+        const ville = req.query.ville;
 
         const page = req.query.page || 1 ;
         const limit= req.query.limit || 10;
@@ -130,7 +135,11 @@ get_all_projets_by_status = async ( req , res ) =>
         {
             where_condition.status_ = status_ === 'true'; 
         }
-
+        if (ville) 
+        {
+            where_condition[Op.or] = [ { ville_1: { [Op.like]: `%${ville}%` } }, { ville_2: { [Op.like]: `%${ville}%` } } ];
+        }
+        
         const projets = await projet_model.findAndCountAll( { 
             where: where_condition  ,
             include: [ 
