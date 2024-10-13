@@ -13,6 +13,7 @@ const sequelize_DB = new Sequelize(
         operatorsAliases: 0 ,
         dialectOptions: {
             ssl: {
+                
                 require: true, 
                 rejectUnauthorized: false
             }
